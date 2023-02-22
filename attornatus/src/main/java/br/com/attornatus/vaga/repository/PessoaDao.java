@@ -9,11 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.attornatus.vaga.model.Pessoa;
 
-
 @Repository
 @Transactional
-public interface PessoaDao extends JpaRepository<Pessoa, Long>{
+public interface PessoaDao extends JpaRepository<Pessoa, Long> {
 
 	@Query(value = "select u from Pessoa u where upper(trim(u.nome)) like %?1%")
-	List<Pessoa>buscaPorNome (String nome);
+	List<Pessoa> buscaPorNome(String nome);
 }

@@ -25,36 +25,35 @@ public class EnderecoController {
 	private PessoaDao pessoaDao;
 	@Autowired
 	private EnderecoDao enderecoDao;
-	
-	
+
 	@PostMapping(value = "/salvarendereco/{pessoa_id}")
-    @ResponseBody
-    public String salvarEnderecoTeste(String result,@PathVariable(value = "pessoa_id")Long idPessoa){
-    	Optional<Pessoa> pessoaOp  =  pessoaDao.findById(idPessoa);
-    	Pessoa pessoa = pessoaOp.get();
-    	Endereco enderecoUm = new Endereco();
-    	enderecoUm.setCep(3727322);
-    	enderecoUm.setCidade("rio do sul");
-    	enderecoUm.setEndereçoPrincipal(true);
-    	enderecoUm.setLogradouro("rua sebastiao");
-    	enderecoUm.setNumero(510);
-    	enderecoUm.setPessoa(pessoa);  	
-    	
-    enderecoDao.save(enderecoUm);
-    return "salvo";
-    	
-    }
-   
+	@ResponseBody
+	public String salvarEnderecoTeste(String result, @PathVariable(value = "pessoa_id") Long idPessoa) {
+		Optional<Pessoa> pessoaOp = pessoaDao.findById(idPessoa);
+		Pessoa pessoa = pessoaOp.get();
+		Endereco enderecoUm = new Endereco();
+		enderecoUm.setCep(3727322);
+		enderecoUm.setCidade("rio do sul");
+		enderecoUm.setEndereçoPrincipal(true);
+		enderecoUm.setLogradouro("rua sebastiao");
+		enderecoUm.setNumero(510);
+		enderecoUm.setPessoa(pessoa);
+
+		enderecoDao.save(enderecoUm);
+		return "salvo";
+
+	}
+
 	@PostMapping(value = "/salvarenderecometodo")
-    @ResponseBody
-    public ResponseEntity<Endereco>salvar(@RequestBody Endereco endereco ,@RequestParam(name = "idPessoa") Long idPessoa){
-	Optional<Pessoa> pessoaBusca = pessoaDao.findById(idPessoa);
-	Pessoa pessoa =  pessoaBusca.get();
-	 endereco.setPessoa(pessoa);
-    Endereco enderecoSalvar =   enderecoDao.save(endereco);
-    return new ResponseEntity<Endereco>(enderecoSalvar , HttpStatus.CREATED);
-    	
-    }
-	
-	
+	@ResponseBody
+	public ResponseEntity<Endereco> salvar(@RequestBody Endereco endereco,
+			@RequestParam(name = "idPessoa") Long idPessoa) {
+		Optional<Pessoa> pessoaBusca = pessoaDao.findById(idPessoa);
+		Pessoa pessoa = pessoaBusca.get();
+		endereco.setPessoa(pessoa);
+		Endereco enderecoSalvar = enderecoDao.save(endereco);
+		return new ResponseEntity<Endereco>(enderecoSalvar, HttpStatus.CREATED);
+
+	}
+
 }

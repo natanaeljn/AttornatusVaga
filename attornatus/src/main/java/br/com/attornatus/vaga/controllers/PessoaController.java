@@ -28,98 +28,94 @@ import br.com.attornatus.vaga.model.Pessoa;
 import br.com.attornatus.vaga.repository.EnderecoDao;
 import br.com.attornatus.vaga.repository.PessoaDao;
 
-
-
-
-
-
-
 /**
  *
  * A sample greetings controller to return greeting text
  */
 @RestController
 public class PessoaController {
-	
+
 	@Autowired
 	private PessoaDao pessoaDao;
 	@Autowired
 	private EnderecoDao enderecoDao;
-	
-    /**
-     *
-     * @param name the name to greet
-     * @return greeting text
-     */
-    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public String greetingText(@PathVariable String name) {
-        return "Hello " + name + "!";
-    }
-    @RequestMapping(value = "/salvar/{name}", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public String testeSalvar(@PathVariable String name) {
-    	Pessoa pessoa = new Pessoa();
-    	
-    	pessoa.setNome(name);
-    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    	pessoa.setDataNascimento(LocalDate.parse("21/02/2022",formatter));
-        pessoaDao.save(pessoa);
-        
-    	
-    	
-    return "Usuario " + name + ", salvo com sucesso";
-    }
-    
-    /*lista as pessoas com seus respectivos enderecos*/
-    @GetMapping(value = "/listaPessoas")
-    @ResponseBody
-    public ResponseEntity<List<Pessoa>>listarPessoas(){
-    	List<Pessoa>pessoas = pessoaDao.findAll();
-    	
-    	return new ResponseEntity<List<Pessoa>>(pessoas, HttpStatus.OK);
-    }
-    /*busca por Id*/
-    @GetMapping(value = "/buscapessoaid")
-    @ResponseBody
-    public ResponseEntity<Pessoa>consultarPessoaId(@RequestParam(name = "idPessoa") Long idPessoa){
-    Pessoa pessoaId =  pessoaDao.findById(idPessoa).get();
-    return new ResponseEntity<Pessoa>(pessoaId , HttpStatus.OK);
-   }
-    
-    @PostMapping(value = "/salvar")
-    @ResponseBody
-    public ResponseEntity<Pessoa>salvar(@RequestBody Pessoa pessoa){
-    Pessoa usuarioSalvar =   pessoaDao.save(pessoa);
-    return new ResponseEntity<Pessoa>(usuarioSalvar , HttpStatus.CREATED);
-    	
-    }
-    /*metodo para editar e atualizar */
-    @PutMapping(value = "/atualizar")
-    @ResponseBody
-    public ResponseEntity<?>atualizar(@RequestBody Pessoa pessoa ){
-    if(pessoa.getId() == null) {
-    	return new ResponseEntity<String>("Id nao foi informado" , HttpStatus.OK);
-    }
-    	
-    Pessoa pessoaSalvar =   pessoaDao.save(pessoa);
-    return new ResponseEntity<Pessoa>(pessoaSalvar , HttpStatus.OK);
-    	
-    }
-    @DeleteMapping(value = "/deletar")
-    @ResponseBody
-    public ResponseEntity<String>deletar(@RequestParam Long idPessoa){
-    pessoaDao.deleteById(idPessoa);
-    return new ResponseEntity<String>("pessoa deletada" , HttpStatus.OK);
-    	
-    }
-    @GetMapping(value = "/buscapessoanome")
-    @ResponseBody
-    public ResponseEntity<List<Pessoa>>buscaUserNome(@RequestParam(name = "nome") String nome){
-    List<Pessoa>lista = pessoaDao.buscaPorNome(nome.trim().toUpperCase());
-    return new ResponseEntity<List<Pessoa>>(lista , HttpStatus.OK);
-    
-    	
-    }
-	
+
+	/**
+	 *
+	 * @param name the name to greet
+	 * @return greeting text
+	 */
+	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public String greetingText(@PathVariable String name) {
+		return "Hello " + name + "!";
+	}
+
+	@RequestMapping(value = "/salvar/{name}", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public String testeSalvar(@PathVariable String name) {
+		Pessoa pessoa = new Pessoa();
+
+		pessoa.setNome(name);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		pessoa.setDataNascimento(LocalDate.parse("21/02/2022", formatter));
+		pessoaDao.save(pessoa);
+
+		return "Usuario " + name + ", salvo com sucesso";
+	}
+
+	/* lista as pessoas com seus respectivos enderecos */
+	@GetMapping(value = "/listaPessoas")
+	@ResponseBody
+	public ResponseEntity<List<Pessoa>> listarPessoas() {
+		List<Pessoa> pessoas = pessoaDao.findAll();
+
+		return new ResponseEntity<List<Pessoa>>(pessoas, HttpStatus.OK);
+	}
+
+	/* busca por Id */
+	@GetMapping(value = "/buscapessoaid")
+	@ResponseBody
+	public ResponseEntity<Pessoa> consultarPessoaId(@RequestParam(name = "idPessoa") Long idPessoa) {
+		Pessoa pessoaId = pessoaDao.findById(idPessoa).get();
+		return new ResponseEntity<Pessoa>(pessoaId, HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/salvar")
+	@ResponseBody
+	public ResponseEntity<Pessoa> salvar(@RequestBody Pessoa pessoa) {
+		Pessoa usuarioSalvar = pessoaDao.save(pessoa);
+		return new ResponseEntity<Pessoa>(usuarioSalvar, HttpStatus.CREATED);
+
+	}
+
+	/* metodo para editar e atualizar */
+	@PutMapping(value = "/atualizar")
+	@ResponseBody
+	public ResponseEntity<?> atualizar(@RequestBody Pessoa pessoa) {
+		if (pessoa.getId() == null) {
+			return new ResponseEntity<String>("Id nao foi informado", HttpStatus.OK);
+		}
+
+		Pessoa pessoaSalvar = pessoaDao.save(pessoa);
+		return new ResponseEntity<Pessoa>(pessoaSalvar, HttpStatus.OK);
+
+	}
+
+	@DeleteMapping(value = "/deletar")
+	@ResponseBody
+	public ResponseEntity<String> deletar(@RequestParam Long idPessoa) {
+		pessoaDao.deleteById(idPessoa);
+		return new ResponseEntity<String>("pessoa deletada", HttpStatus.OK);
+
+	}
+
+	@GetMapping(value = "/buscapessoanome")
+	@ResponseBody
+	public ResponseEntity<List<Pessoa>> buscaUserNome(@RequestParam(name = "nome") String nome) {
+		List<Pessoa> lista = pessoaDao.buscaPorNome(nome.trim().toUpperCase());
+		return new ResponseEntity<List<Pessoa>>(lista, HttpStatus.OK);
+
+	}
+
 }

@@ -20,13 +20,13 @@ public class Endereco {
 	private int cep;
 	private int numero;
 	private String cidade;
-	/*verificaçao se este é o endereço principal apenas por um boolean*/
-	private boolean endereçoPrincipal ; 
-	
+	/* verificaçao se este é o endereço principal apenas por um boolean */
+	private boolean endereçoPrincipal;
+
 	@JsonIgnore
 	@ForeignKey(name = "pessoa_id")
 	@ManyToOne
-    private Pessoa pessoa;
+	private Pessoa pessoa;
 
 	public Long getId() {
 		return id;
@@ -83,5 +83,5 @@ public class Endereco {
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
 	}
-	
+
 }
