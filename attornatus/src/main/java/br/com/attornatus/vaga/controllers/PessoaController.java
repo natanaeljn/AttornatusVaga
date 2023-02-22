@@ -4,12 +4,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -30,12 +32,14 @@ import br.com.attornatus.vaga.repository.PessoaDao;
 
 
 
+
+
 /**
  *
  * A sample greetings controller to return greeting text
  */
 @RestController
-public class GreetingsController {
+public class PessoaController {
 	
 	@Autowired
 	private PessoaDao pessoaDao;
@@ -56,7 +60,7 @@ public class GreetingsController {
     @ResponseStatus(HttpStatus.OK)
     public String testeSalvar(@PathVariable String name) {
     	Pessoa pessoa = new Pessoa();
-    	Endereco endereco = new Endereco();
+    	
     	pessoa.setNome(name);
     	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     	pessoa.setDataNascimento(LocalDate.parse("21/02/2022",formatter));
@@ -67,6 +71,7 @@ public class GreetingsController {
     return "Usuario " + name + ", salvo com sucesso";
     }
     
+    /*lista as pessoas com seus respectivos enderecos*/
     @GetMapping(value = "/listaPessoas")
     @ResponseBody
     public ResponseEntity<List<Pessoa>>listarPessoas(){
@@ -74,10 +79,11 @@ public class GreetingsController {
     	
     	return new ResponseEntity<List<Pessoa>>(pessoas, HttpStatus.OK);
     }
-    @GetMapping(value = "/buscauserid")
+    /*busca por Id*/
+    @GetMapping(value = "/buscapessoaid")
     @ResponseBody
-    public ResponseEntity<Pessoa>consultarPessoaId(@RequestParam(name = "idUser") Long idUser){
-    Pessoa pessoaId =  pessoaDao.findById(idUser).get();
+    public ResponseEntity<Pessoa>consultarPessoaId(@RequestParam(name = "idPessoa") Long idPessoa){
+    Pessoa pessoaId =  pessoaDao.findById(idPessoa).get();
     return new ResponseEntity<Pessoa>(pessoaId , HttpStatus.OK);
    }
     
@@ -102,10 +108,18 @@ public class GreetingsController {
     }
     @DeleteMapping(value = "/deletar")
     @ResponseBody
-    public ResponseEntity<String>deletar(@RequestParam Long idUser){
-    pessoaDao.deleteById(idUser);
-    return new ResponseEntity<String>("usuario deletado" , HttpStatus.OK);
+    public ResponseEntity<String>deletar(@RequestParam Long idPessoa){
+    pessoaDao.deleteById(idPessoa);
+    return new ResponseEntity<String>("pessoa deletada" , HttpStatus.OK);
     	
     }
+    @GetMapping(value = "/buscapessoanome")
+    @ResponseBody
+    public ResponseEntity<List<Pessoa>>buscaUserNome(@RequestParam(name = "nome") String nome){
+    List<Pessoa>lista = pessoaDao.buscaPorNome(nome.trim().toUpperCase());
+    return new ResponseEntity<List<Pessoa>>(lista , HttpStatus.OK);
     
+    	
+    }
+	
 }

@@ -8,6 +8,8 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.ForeignKey;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Endereco {
 
@@ -21,6 +23,7 @@ public class Endereco {
 	/*verificaçao se este é o endereço principal apenas por um boolean*/
 	private boolean endereçoPrincipal ; 
 	
+	@JsonIgnore
 	@ForeignKey(name = "pessoa_id")
 	@ManyToOne
     private Pessoa pessoa;
